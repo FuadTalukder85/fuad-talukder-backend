@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
@@ -28,6 +28,7 @@ async function run() {
 
     const db = client.db("Fuad");
     const skills = db.collection("skillsCollection");
+    const projects = db.collection("projectsCollection");
 
     //post skills
     app.post("/create-skills", async (req, res) => {
@@ -70,6 +71,19 @@ async function run() {
         },
       };
       const result = await skills.updateOne(filter, skillData, options);
+      res.send(result);
+    });
+
+    //post projecta
+    app.post("/create-projects", async (req, res) => {
+      const addProjects = req.body;
+      const result = await projects.insertOne(addProjects);
+      res.send(result);
+    });
+
+    //get all projects
+    app.get("/projects", async (req, res) => {
+      const result = await projects.find().toArray();
       res.send(result);
     });
 
