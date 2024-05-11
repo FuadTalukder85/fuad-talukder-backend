@@ -29,6 +29,7 @@ async function run() {
     const db = client.db("Fuad");
     const skills = db.collection("skillsCollection");
     const projects = db.collection("projectsCollection");
+    const blog = db.collection("blogCollection");
 
     //post skills
     app.post("/create-skills", async (req, res) => {
@@ -74,7 +75,7 @@ async function run() {
       res.send(result);
     });
 
-    //post projecta
+    //post projects
     app.post("/create-projects", async (req, res) => {
       const addProjects = req.body;
       const result = await projects.insertOne(addProjects);
@@ -84,6 +85,13 @@ async function run() {
     //get all projects
     app.get("/projects", async (req, res) => {
       const result = await projects.find().toArray();
+      res.send(result);
+    });
+
+    //post blog
+    app.post("/create-blog", async (req, res) => {
+      const addBlog = req.body;
+      const result = await blog.insertOne(addBlog);
       res.send(result);
     });
 
