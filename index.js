@@ -25,6 +25,54 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
+
+    const db = client.db("Fuad");
+    const skills = db.collection("skillsCollection");
+
+    //post skills
+    app.post("/create-skills", async (req, res) => {
+      const addSkill = req.body;
+      const result = await skills.insertOne(addSkill);
+      res.send(result);
+    });
+
+    //get all skills
+    app.get("/skills", async (req, res) => {
+      const result = await skills.find().toArray();
+      res.send(result);
+    });
+
+    //get single skill by id
+    // app.get("/skills/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) };
+    //   const result = await skills.findOne(query);
+    //   res.send(result);
+    // });
+
+    //delete an skill
+    app.delete("/skills/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await skills.deleteOne(query);
+      res.send(result);
+    });
+
+    //update skills
+    app.put("/skills/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateSkill = req.body;
+      const skillData = {
+        $set: {
+          title: updateSkill.title,
+        },
+      };
+      const result = await skills.updateOne(filter, skillData, options);
+      res.send(result);
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
