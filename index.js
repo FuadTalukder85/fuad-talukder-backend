@@ -29,7 +29,8 @@ async function run() {
     const db = client.db("Fuad");
     const skills = db.collection("skillsCollection");
     const projects = db.collection("projectsCollection");
-    const blog = db.collection("blogCollection");
+    const blogs = db.collection("blogCollection");
+    const contact = db.collection("contactCollection");
 
     //post skills
     app.post("/create-skills", async (req, res) => {
@@ -91,7 +92,26 @@ async function run() {
     //post blog
     app.post("/create-blog", async (req, res) => {
       const addBlog = req.body;
-      const result = await blog.insertOne(addBlog);
+      const result = await blogs.insertOne(addBlog);
+      res.send(result);
+    });
+
+    // get skills
+    app.get("/blogs", async (req, res) => {
+      const result = await blogs.find().toArray();
+      res.send(result);
+    });
+
+    //post contact
+    app.post("/create-contact", async (req, res) => {
+      const addContact = req.body;
+      const result = await contact.insertOne(addContact);
+      res.send(result);
+    });
+
+    // get contact
+    app.get("/contact", async (req, res) => {
+      const result = await contact.find().toArray();
       res.send(result);
     });
 
