@@ -32,6 +32,9 @@ async function run() {
     const blogs = db.collection("blogCollection");
     const contact = db.collection("contactCollection");
 
+    // Handle favicon requests
+    app.get("/favicon.ico", (req, res) => res.status(204).end());
+
     //post skills
     app.post("/create-skills", async (req, res) => {
       const addSkill = req.body;
@@ -119,17 +122,16 @@ async function run() {
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
+    app.get("/", (req, res) => {
+      res.send("Hello Fuad!!!");
+    });
+
+    app.listen(port, () => {
+      console.log(`Fuad is running on port ${port}`);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
   }
 }
 run().catch(console.dir);
-
-app.get("/", (req, res) => {
-  res.send("Hello Fuad!!!");
-});
-
-app.listen(port, () => {
-  console.log(`Fuad is running on port ${port}`);
-});
